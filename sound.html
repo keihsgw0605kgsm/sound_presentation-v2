@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/style.css">
+    <title>音声提示</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.1/howler.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <header>
+      <h1 class="center">音声提示</h1>
+    </header>
+    <!--<hr>-->
+    <form id="presented_sound">
+      <fieldset>
+        <input id="sound-0" class="radio-inline__input" type="radio" name="accessible_radio" value="sound-0" checked="checked"/>
+        <label class="radio-inline__label" for="sound-0">
+          音声なし
+        </label>
+        <input id="sound-1" class="radio-inline__input" type="radio" name="accessible_radio" value="sound-1"/>
+        <label class="radio-inline__label" for="sound-1">
+          スズメ
+        </label>
+        <input id="sound-2" class="radio-inline__input" type="radio" name="accessible_radio" value="sound-2"/>
+        <label class="radio-inline__label" for="sound-2">
+          呼気
+        </label><br>
+        <input id="sound-3" class="radio-inline__input" type="radio" name="accessible_radio" value="sound-3"/>
+        <label class="radio-inline__label" for="sound-3">
+          吸気
+        </label>
+        <input id="sound-4" class="radio-inline__input" type="radio" name="accessible_radio" value="sound-4"/>
+        <label class="radio-inline__label" for="sound-4">
+          水滴
+        </label>
+        <input id="sound-5" class="radio-inline__input" type="radio" name="accessible_radio" value="sound-5"/>
+        <label class="radio-inline__label" for="sound-5">
+          パッ!
+        </label>
+      </fieldset>
+    </form>
+    <div class="center">
+      <main id="webConf">
+        <input type="image" src="img/speaking-head.png" class="speak-btn" v-on:click="speak" onclick='clickBtn()'>
+      </main>
+    </div>
+</body>
+  <script>
+      var NotBtnPusher = true;
+
+      function soundPresent(spk){
+        switch(spk){
+          case "sound-0":
+            //alert("sound-0");
+            break;
+          case "sound-1":
+            var sound = new Howl({ src: ['mp3/sparrow.mp3'] })
+            //var sound = new Audio("mp3/sparrow.mp3");
+            sound.loop = false;
+            sound.play();
+            //alert("sound-1");
+            break;
+          case "sound-2":
+            var sound = new Howl({ src: ['mp3/breath_out.mp3'] })
+            //var sound = new Audio("mp3/breath_out.mp3");
+            sound.loop = false;
+            sound.play();
+            //alert("sound-2");
+            break;
+          case "sound-3":
+            var sound = new Howl({ src: ['mp3/breath_in.mp3'] })
+            //var sound = new Audio("mp3/breath_in.mp3");
+            sound.loop = false;
+            sound.play();
+            //alert("sound-3");
+            break;
+          case "sound-4":
+            var sound = new Howl({ src: ['mp3/drops.mp3'] })
+            //var sound = new Audio("mp3/drops.mp3");
+            sound.loop = false;
+            sound.play();
+            //alert("sound-4");
+            break;
+          case "sound-5":
+            var sound = new Howl({ src: ['mp3/sound.mp3'] })
+            //var sound = new Audio("mp3/sound.mp3");
+            sound.loop = false;
+            sound.play();
+            //alert("sound-5");
+            break;
+        }
+      }
+      
+      function clickBtn(){
+        NotBtnPusher = false;
+      }
+
+      var socket = io();
+      var app = new Vue({
+        el: '#webConf',
+        methods: {
+            // ボタンが押されたら、クライアントからサーバーにtrueを送信
+            speak: function() {
+            socket.emit('c2s-spk', document.getElementById("presented_sound").accessible_radio.value);
+            return false;
+            }
+        },
+      });
+      // サーバーからtrueを受信したら、全クライアントのスマホを振動させる
+      socket.on('s2c-spk', function(spk) {
+        if(NotBtnPusher)soundPresent(spk);
+        NotBtnPusher = true;
+      });
+  </script>
+</html>

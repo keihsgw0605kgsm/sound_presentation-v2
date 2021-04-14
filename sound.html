@@ -38,6 +38,18 @@
         <input id="sound-5" class="radio-inline__input" type="radio" name="accessible_radio" value="sound-5"/>
         <label class="radio-inline__label" for="sound-5">
           パッ!
+        </label><br>
+        <input id="sound-6" class="radio-inline__input" type="radio" name="accessible_radio" value="sound-6"/>
+        <label class="radio-inline__label" for="sound-6">
+          牛
+        </label>
+        <input id="sound-7" class="radio-inline__input" type="radio" name="accessible_radio" value="sound-7"/>
+        <label class="radio-inline__label" for="sound-7">
+          ジャンプ
+        </label>
+        <input id="sound-8" class="radio-inline__input" type="radio" name="accessible_radio" value="sound-8"/>
+        <label class="radio-inline__label" for="sound-8">
+          ベル
         </label>
       </fieldset>
     </form>
@@ -85,6 +97,27 @@
             break;
           case "sound-5":
             var sound = new Howl({ src: ['mp3/sound.mp3'] })
+            //var sound = new Audio("mp3/sound.mp3");
+            sound.loop = false;
+            sound.play();
+            //alert("sound-5");
+            break;
+          case "sound-6":
+            var sound = new Howl({ src: ['mp3/cow.mp3'] })
+            //var sound = new Audio("mp3/sound.mp3");
+            sound.loop = false;
+            sound.play();
+            //alert("sound-5");
+            break;
+          case "sound-7":
+            var sound = new Howl({ src: ['mp3/jump.mp3'] })
+            //var sound = new Audio("mp3/sound.mp3");
+            sound.loop = false;
+            sound.play();
+            //alert("sound-5");
+            break;
+          case "sound-8":
+            var sound = new Howl({ src: ['mp3/bell.mp3'] })
             //var sound = new Audio("mp3/sound.mp3");
             sound.loop = false;
             sound.play();
